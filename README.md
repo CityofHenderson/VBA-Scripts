@@ -21,3 +21,5 @@ Press the green Run button at the top (Looks like a play button)
 You may now use close this window.
 
 To access the formula type `=MANNING(PipeSize,Slope,K,Depth,Coefficient)`
+
+Press `Ctrl+A` for help or `Ctrl+Shift+A` to see the arguments in the formula pane.
