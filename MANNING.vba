@@ -1,4 +1,4 @@
-'Version 1.0.0.0
+'Version 1.0.0.1
 'Created by Ian Harshbarger
 'for the City of Henderson
 'February 28 2019
@@ -22,8 +22,8 @@ If Depth <= Radius Then
 Else
     Depth = 2 * Radius - Depth
     Theta = 2 * Application.WorksheetFunction.Acos((Radius - Depth) / Radius)
-    Area = (Application.WorksheetFunction.pi() * Radius ^ 2) - (Radius ^ 2 * (Theta - Sin(Theta)) / 2)
-    WettedPerimeter = (2 * Application.WorksheetFunction.pi() * Radius) - (Radius * Theta)
+    Area = (Application.WorksheetFunction.Pi() * Radius ^ 2) - (Radius ^ 2 * (Theta - Sin(Theta)) / 2)
+    WettedPerimeter = (2 * Application.WorksheetFunction.Pi() * Radius) - (Radius * Theta)
     HydraulicRadius = Area / WettedPerimeter
 End If
 MANNING = ((K * Area * (HydraulicRadius ^ (2 / 3)) * (Slope ^ (1 / 2))) / Coefficient)
@@ -31,27 +31,25 @@ MANNING = ((K * Area * (HydraulicRadius ^ (2 / 3)) * (Slope ^ (1 / 2))) / Coeffi
 
 End Function
 
+Sub DescribeFunction()
+   Dim FuncName As String         'name of the function you want to register
+   Dim FuncDesc As String         'description of the function itself
+   Dim Category As String         'description of function arguments
+   Dim ArgDesc(1 To 5) As String  'description of function arguments
 
-Sub RegisterUDF()
-Dim strFunc As String   'name of the function you want to register
-Dim strDesc As String   'description of the function itself
-Dim strArgs() As String 'description of function arguments
-
-    'Register Linterp linear interpolation function
-    ReDim strArgs(1 To 5) 'The upper bound is the number of arguments in your function
-    strFunc = "Manning"
-    strDesc = "Solves for the Manning Formula for a Circlular Pipe"
-    strArgs(1) = "Nominal Pipe Size"
-    strArgs(2) = "Slope of the Upstream Sewer Line"
-    strArgs(3) = "CFS use 1.49, GPM use 669, and MGD use 0.963"
-    strArgs(4) = "Depth of the liquid"
-    strArgs(5) = "Typical is is 0.013"
-    Application.MacroOptions Macro:=strFunc, _
-                             Description:=strDesc, _
-                             ArgumentDescriptions:=strArgs, _
-                             Category:="My Custom Category"
+   FuncName = "MANNING"
+   FuncDesc = "Solves for the Manning Formula for a Circlular Pipe"
+   Category = 7 'Text category
+    ArgDesc(1) = "Nominal Pipe Size"
+    ArgDesc(2) = "Slope of the Upstream Sewer Line"
+    ArgDesc(3) = "CFS use 1.49, GPM use 669, and MGD use 0.963"
+    ArgDesc(4) = "Depth of the liquid"
+    ArgDesc(5) = "Typical is is 0.013"
+   Application.MacroOptions _
+      Macro:=FuncName, _
+      Description:=FuncDesc, _
+      Category:=Category, _
+      ArgumentDescriptions:=ArgDesc
 End Sub
 
-Sub UnregisterUDF()
-    Application.MacroOptions Macro:="IFERROR", Description:=Empty, Category:=Empty
-End Sub
+
