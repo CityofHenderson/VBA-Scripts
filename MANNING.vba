@@ -1,29 +1,33 @@
-Public Function MANNING(PipeSize As Double, Slope As Double, K As Double, Depth As Double, Coefficient As Double)
+'Version 1.0.0.0
+'Created by Ian Harshbarger
+'for the City of Henderson
+'February 28 2019
+'GNU General Public License v3
 
-'PipeSize = 14.426
-'Slope = 0.0072
-'K = 1.49
-'Depth = 8.6556
-'Coefficient = 0.013
+Public Function MANNING(PipeSize As Double, Slope As Double, K As Double, Depth As Double, Coefficient As Double)
+Depth = Depth / 12
 
 Dim Radius As Double
+Dim Theta As Double
+Dim Area As Double
+Dim WettedPerimeter As Double
+Dim HydraulicRadius As Double
 Radius = (PipeSize / 2) / 12
 
-Dim Theta As Double
-Theta = 2 * Application.WorksheetFunction.Acos((Radius - Depth) / (PipeSize / 2))
-
-Dim Area As Double
-Area = Radius ^ 2 * (Theta - Sin(Theta)) / 2
-MsgBox Area
-
-Dim WettedPerimeter As Double
-WettedPerimeter = Radius * Theta
-
-Dim HydraulicRadius As Double
-HydraulicRadius = Area / WettedPerimeter
-
-MANNING = ((K * Area * (Radius ^ (2 / 3)) * (Slope ^ (1 / 2))) / Coefficient)
-
+If Depth <= Radius Then
+    Theta = 2 * Application.WorksheetFunction.Acos((Radius - Depth) / Radius)
+    Area = Radius ^ 2 * (Theta - Sin(Theta)) / 2
+    WettedPerimeter = Radius * Theta
+    HydraulicRadius = Area / WettedPerimeter
+Else
+    Depth = 2 * Radius - Depth
+    Theta = 2 * Application.WorksheetFunction.Acos((Radius - Depth) / Radius)
+    Area = (Application.WorksheetFunction.pi() * Radius ^ 2) - (Radius ^ 2 * (Theta - Sin(Theta)) / 2)
+    WettedPerimeter = (2 * Application.WorksheetFunction.pi() * Radius) - (Radius * Theta)
+    HydraulicRadius = Area / WettedPerimeter
+End If
+MANNING = ((K * Area * (HydraulicRadius ^ (2 / 3)) * (Slope ^ (1 / 2))) / Coefficient)
+'MsgBox "K =" + CStr(K) + " Area = " + CStr(Area) + " HydraulicRadius = " + CStr(HydraulicRadius) + " Slope = " + CStr(Slope) + " Coefficient = " + CStr(Coefficient)
 
 End Function
 
@@ -36,9 +40,7 @@ Dim strArgs() As String 'description of function arguments
     'Register Linterp linear interpolation function
     ReDim strArgs(1 To 5) 'The upper bound is the number of arguments in your function
     strFunc = "Manning"
-    strDesc = "2D Linear Interpolation function that automatically picks which range " & _
-              "to interpolate between based on the closest KnownX value to the NewX " & _
-              "value you want to interpolate for."
+    strDesc = "Solves for the Manning Formula for a Circlular Pipe"
     strArgs(1) = "Nominal Pipe Size"
     strArgs(2) = "Slope of the Upstream Sewer Line"
     strArgs(3) = "CFS use 1.49, GPM use 669, and MGD use 0.963"
@@ -53,8 +55,3 @@ End Sub
 Sub UnregisterUDF()
     Application.MacroOptions Macro:="IFERROR", Description:=Empty, Category:=Empty
 End Sub
-
-
-
-
-
