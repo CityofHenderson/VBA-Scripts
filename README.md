@@ -1,6 +1,6 @@
 # VBA-Scripts
 
-##Installing MANNING.vba
+## Installing MANNING.vba
 
 Open your chosen Excel sheet.
 
