@@ -1,4 +1,4 @@
-'Version 1.0.0.1
+'Version 1.0.0.2
 'Created by Ian Harshbarger
 'for the City of Henderson
 'February 28 2019
@@ -44,7 +44,7 @@ Sub DescribeFunction()
     ArgDesc(2) = "Slope of the Upstream Sewer Line"
     ArgDesc(3) = "CFS use 1.49, GPM use 669, and MGD use 0.963"
     ArgDesc(4) = "Depth of the liquid"
-    ArgDesc(5) = "Typical is is 0.013"
+    ArgDesc(5) = "Typical is 0.013"
    Application.MacroOptions _
       Macro:=FuncName, _
       Description:=FuncDesc, _
